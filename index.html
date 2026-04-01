@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Qub - Word Battle</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page" class="page active">
+        <div class="landing-container">
+            <div class="logo-container">
+                
+                <h1 class="game-title">
+  <span style="color: #00d4aa;">Q</span>u<span style="color: #ff6b6b;">b</span>
+</h1>
+                <p class="tagline">Strategic word warfare on a 10x10 battlefield</p>
+            </div>
+
+            <form id="player-form" class="player-form">
+                <div class="input-group">
+                    <label for="player1-name">
+                        <span class="player-indicator p1"></span>
+                        Player 1
+                    </label>
+                    <input type="text" id="player1-name" placeholder="Enter your name (optional)" maxlength="15">
+                </div>
+                
+                <div class="input-group">
+                    <label for="player2-name">
+                        <span class="player-indicator p2"></span>
+                        Player 2
+                    </label>
+                    <input type="text" id="player2-name" placeholder="Enter your name (optional)" maxlength="15">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="start-battle-text">Start Battle</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="rules-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                        <span>How to Play</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <footer class="main-footer">
+            Made with care by <a href="https://github.com/Swarup113" target="_blank" rel="noopener noreferrer">Swarup Dewanjee</a>
+        </footer>
+    </div>
+
+    <!-- Game Page -->
+    <div id="game-page" class="page">
+        <header class="game-header">
+            <div class="header-left">
+                <h2 class="game-logo">Qub</h2>
+            </div>
+            <div class="header-center">
+                <div class="turn-timer">
+                    <div class="turn-indicator">
+                        <span class="turn-text">Turn</span>
+                        <span class="current-player" id="current-player-name">Player 1</span>
+                    </div>
+                    <div class="timer-container">
+                        <div class="timer-circle" id="timer-circle">
+                            <svg viewBox="0 0 36 36" class="circular-chart">
+                                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                <path class="circle" id="timer-circle-path" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            </svg>
+                            <div class="timer-value" id="timer-display">15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-finish" id="finish-btn">Finish Game</button>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="scoreboard">
+                <div class="score-card player1-score active">
+                    <div class="score-player-info">
+                        <span class="score-indicator"></span>
+                        <span class="score-name" id="p1-score-name">Player 1</span>
+                    </div>
+                    <div class="score-value" id="p1-score">0</div>
+                </div>
+                <div class="score-divider">
+                    <span>VS</span>
+                </div>
+                <div class="score-card player2-score">
+                    <div class="score-player-info">
+                        <span class="score-indicator"></span>
+                        <span class="score-name" id="p2-score-name">Player 2</span>
+                    </div>
+                    <div class="score-value" id="p2-score">0</div>
+                </div>
+            </div>
+
+            <div class="board-container">
+                <div class="board" id="game-board"></div>
+                <div id="api-status" class="api-status">Validating...</div>
+            </div>
+
+            <div class="game-controls">
+                <div class="cells-remaining">
+                    <span class="cells-label">Cells Left:</span>
+                    <span class="cells-count" id="cells-remaining">100</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="game-footer">
+            Made with care by <a href="https://github.com/Swarup113" target="_blank" rel="noopener noreferrer">Swarup Dewanjee</a>
+        </footer>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-rules">&times;</button>
+            <h2 class="modal-title">How to Play</h2>
+            <div class="rules-content">
+                <div class="rule-section">
+                    <h3 class="rule-heading">Objective</h3>
+                    <p>Score points by creating valid English words on the grid.</p>
+                </div>
+                
+                <div class="rule-section">
+                    <h3 class="rule-heading">Rules</h3>
+                    <ul>
+                        <li><strong>Timer:</strong> 15 seconds per turn. Miss it, and you lose 1 point!</li>
+                        <li><strong>Scoring:</strong> You get points for the <strong>longest valid word</strong> you form.</li>
+                        <li><strong>2-Letter Words:</strong> Only standard dictionary words count (no abbreviations like 'st').</li>
+                        <li><strong>Unique Words:</strong> Repeating a word gives 0 points.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Notification Modal -->
+    <div id="score-modal" class="modal score-notification">
+        <div class="score-modal-content">
+            <div class="score-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+            </div>
+            <div class="score-info">
+                <p class="word-formed" id="word-formed"></p>
+                <p class="points-earned" id="points-earned"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Used Word Notification Modal -->
+    <div id="used-word-modal" class="modal score-notification">
+        <div class="score-modal-content timeout-content">
+            <div class="timeout-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+            </div>
+            <div class="score-info">
+                <p class="word-formed" id="used-word-text">Word Already Used!</p>
+                <p class="points-earned penalty">0 Points</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Out Notification Modal -->
+    <div id="timeout-modal" class="modal score-notification">
+        <div class="score-modal-content timeout-content">
+            <div class="timeout-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            <div class="score-info">
+                <p class="word-formed">Time's Up!</p>
+                <p class="points-earned penalty">-1 Point</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finish Game Modal (NEW) -->
+    <div id="finish-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Game Scoreboard</h2>
+            <div class="finish-stats">
+                <div class="score-summary">
+                    <div class="finish-score-card">
+                        <span class="finish-player-name" id="finish-p1-name">Player 1</span>
+                        <span class="finish-score-value" id="finish-p1-score">0</span>
+                    </div>
+                    <div class="finish-score-card">
+                        <span class="finish-player-name" id="finish-p2-name">Player 2</span>
+                        <span class="finish-score-value" id="finish-p2-score">0</span>
+                    </div>
+                </div>
+                <div class="winner-announcement" id="finish-winner-text"></div>
+                <div class="finish-words-count">
+                    <span>Words played: <strong id="finish-words-total">0</strong></span>
+                </div>
+            </div>
+            <div class="finish-buttons">
+                <button class="btn btn-resume" id="resume-btn">Resume Play</button>
+                <button class="btn btn-newgame" id="newgame-btn">New Game</button>
+                <button class="btn btn-quit" id="quit-btn">Quit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Old Confirm Finish Modal (kept but not used; required for red button style) -->
+    <div id="confirm-finish-modal" class="modal">
+        <div class="modal-content" style="text-align: center; padding: 2rem;">
+            <h2>Finish Game?</h2>
+            <p style="margin: 1rem 0; color: var(--text-secondary);">Are you sure you want to end the game now?</p>
+            <div class="gameover-buttons" style="margin-top: 1.5rem;">
+                <button class="btn btn-primary" id="confirm-yes-btn">Yes, Finish</button>
+                <button class="btn btn-secondary" id="confirm-no-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameover-modal" class="modal">
+        <div class="modal-content gameover-content">
+            <h2 class="modal-title" id="gameover-title">Game Over</h2>
+            <div class="winner-section">
+                <div class="winner-crown">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2 19h20v3H2v-3zm2-8l2-2 4 4 4-4 2 2-4 4h-4l-4-4zm8-9l2 2-2 2-2-2 2-2z"/>
+                    </svg>
+                </div>
+                <p class="winner-text" id="winner-text">Player 1 Wins!</p>
+                <div class="final-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="final-score">25 - 18</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Total Words</span>
+                        <span class="stat-value" id="final-words">12</span>
+                    </div>
+                </div>
+            </div>
+            <div class="gameover-buttons">
+                <button class="btn btn-primary" id="play-again-btn">Play Again</button>
+                <button class="btn btn-secondary" id="home-btn">Quit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter Keyboard (QWERTY) -->
+    <div id="keyboard" class="keyboard">
+        <div class="keyboard-header">
+            <span>Choose a Letter</span>
+            <button class="keyboard-close" id="keyboard-close">&times;</button>
+        </div>
+        <div class="keyboard-rows" id="keyboard-rows"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
