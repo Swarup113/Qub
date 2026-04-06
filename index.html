@@ -53,9 +53,16 @@
                 </div>
             </form>
         </div>
-        <footer class="main-footer">
-            Made with care by <a href="https://github.com/Swarup113" target="_blank" rel="noopener noreferrer">Swarup Dewanjee</a>
+        <footer>
+            <p>
+                <b>©</b> <span id="year"></span> 
+                <a href="https://github.com/Swarup113" class="footer-link" target="_blank" rel="noopener noreferrer">Swarup Dewanjee</a>
+            </p>
         </footer>
+
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
     </div>
 
     <!-- Game Page -->

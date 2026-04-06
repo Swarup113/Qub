@@ -100,8 +100,9 @@ body {
 .game-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.05em; }
 .tagline { font-size: 1rem; color: var(--text-secondary); }
 
+/* Footers - FIXED: Targets generic footer tag to match HTML */
 /* Footers */
-.main-footer, .game-footer {
+footer, .game-footer {
     padding: 1rem;
     text-align: center;
     color: var(--text-muted);
@@ -111,15 +112,17 @@ body {
     margin-top: auto;
 }
 
-.main-footer a, .game-footer a {
-    color: #2ecc71;
+/* Footer Link - Green Text Only */
+footer a,
+.game-footer a {
+    color: #2ecc71; /* Green text color */
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.2s;
 }
 
-.main-footer a:hover, .game-footer a:hover {
-    color: var(--text-primary);
+footer a:hover,
+.game-footer a:hover {
+    color: #27ae60; /* Darker green on hover */
     text-decoration: underline;
 }
 
